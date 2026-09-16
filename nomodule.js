@@ -1,0 +1,103 @@
+(() => {
+  const inText = document.getElementById("input_text");
+  const pKey = document.getElementById("prime_key");
+  const qrSpace = document.getElementById("qrcode-space");
+  const qrCanvas = document.getElementById("qrcode-canvas");
+  const jumpLink = document.getElementById("jump_link");
+  const decPanel = document.getElementById("decrypt-panel");
+  const resDiv = document.getElementById("res");
+  const closeBtn = document.getElementById("close-panel-btn");
+  const ebcdicLayout = " ¢.<(+&]!$*);^-/|,%_>?`:#@'\"=abcdefghi   jklmnopqr   stuvwxyz      " + "ABCDEFGHI   JKLMNOPQR   STUVWXYZ      0123456789";
+  function textToEbcIndices(text) {
+    const b64 = btoa(encodeURIComponent(text));
+    const indices = [];
+    for (let i = 0; i < b64.length; i++) {
+      const idx = ebcdicLayout.indexOf(b64[i]);
+      indices.push(idx !== -1 ? idx : b64.charCodeAt(i) + 100);
+    }
+    return indices;
+  }
+  function getBigKey(keyStr) {
+    const cleanStr = keyStr.replace(/\D/g, "");
+    if (!cleanStr) return BigInt(1);
+    return BigInt(cleanStr);
+  }
+  function injectFactoring(indices, bigKey) {
+    let bigNum = BigInt(0);
+    for (let i = 0; i < indices.length; i++) {
+      bigNum = bigNum * BigInt(256) + BigInt(indices[i]);
+    }
+    return bigNum * bigKey;
+  }
+  document.getElementById("btn_gen").onclick = function () {
+    const text = inText.value;
+    const bigKey = getBigKey(pKey.value);
+    if (!text || bigKey === BigInt(1)) return;
+    const indices = textToEbcIndices(text);
+    const factoredNum = injectFactoring(indices, bigKey);
+    const result1000 = [];
+    let temp = factoredNum;
+    while (temp > BigInt(0)) {
+      result1000.unshift((temp % BigInt(1000)).toString());
+      temp = temp / BigInt(1000);
+    }
+    const cryptoDataStr = result1000.join("-");
+    const keyB64 = btoa((bigKey ** BigInt(5)).toString(16));
+    const secureHash = "#d=" + cryptoDataStr + "&k=" + keyB64;
+    const finalUrl = window.location.href.split("#")[0] + secureHash;
+    qrSpace.style.display = "block";
+    jumpLink.href = secureHash;
+    new QRious({
+      element: qrCanvas,
+      value: finalUrl,
+      size: 280,
+      level: "L"
+    });
+  };
+  function checkAndDecrypt() {
+    const hash = window.location.hash;
+    if (!hash || !hash.startsWith("#d=")) return;
+    decPanel.style.display = "flex";
+    resDiv.innerText = "解読中...";
+    try {
+      const params = new URLSearchParams(hash.substring(1));
+      const cryptoData = params.get("d");
+      const keyB64 = params.get("k");
+      if (!cryptoData || !keyB64) throw new Error();
+      function getFifthRoot(n) {
+        if (n === BigInt(0)) return BigInt(0);
+        let x = n / BigInt(5) + BigInt(1);
+        while (true) {
+          let nextX = (BigInt(4) * x + n / x ** BigInt(4)) / BigInt(5);
+          if (nextX >= x) return x;
+          x = nextX;
+        }
+      }
+      const bigKey = getFifthRoot(BigInt("0x" + atob(keyB64)));
+      const parts = cryptoData.split("-");
+      let bigNum = BigInt(0);
+      for (let i = 0; i < parts.length; i++) bigNum = bigNum * BigInt(1000) + BigInt(parts[i]);
+      if (bigNum % bigKey !== BigInt(0)) throw new Error();
+      let targetNum = bigNum / bigKey;
+      const indices = [];
+      while (targetNum > BigInt(0)) {
+        indices.unshift(Number(targetNum % BigInt(256)));
+        targetNum /= BigInt(256);
+      }
+      let b64 = "";
+      for (let i = 0; i < indices.length; i++) {
+        const v = indices[i];
+        b64 += v < ebcdicLayout.length && ebcdicLayout[v] !== " " ? ebcdicLayout[v] : String.fromCharCode(v - 100);
+      }
+      resDiv.innerText = decodeURIComponent(atob(b64));
+    } catch (e) {
+      resDiv.innerText = "❌ 解読失敗：データまたは鍵が正しくありません。";
+    }
+  }
+  window.onhashchange = checkAndDecrypt;
+  window.onload = checkAndDecrypt;
+  closeBtn.onclick = function () {
+    decPanel.style.display = "none";
+    window.location.hash = "";
+  };
+})();

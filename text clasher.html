@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高互換性 文字暗号化装置 Version.26.9.16</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <link rel="preconnect" href="data:font/woff2">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/light-125/souko@1.0.0/pixelfont%20%40fontface.css">
+    <link type="text/css" rel="stylesheet" href="./style.min.css">
+    <script src="./main.min.mjs" type="module" defer></script>
+    <meta property="og:title" content="高互換性 文字暗号化装置 Version.26.9.16">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#1f1f1f">
+    <meta name="generator" content="WordPress 6.5">
+    <meta http-equiv="content-security-policy" content="default-src 'self'; script-src 'self'; https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js https://cdn.jsdelivr.net/gh/light-125/souko@1.0.0/pixelfont%20%40fontface.css https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js">
+    <meta property="og:description" content="世界でも見たことのない超暗号化装置">
+    <meta property="og:image" content="https://raw.githubusercontent.com/microsoft/fluentui-emoji/refs/heads/main/assets/Locked%20with%20key/High%20Contrast/locked_with_key_high_contrast.svg">
+    <script src="./nomodule.min.js" nomodule defer></script>
+    <link rel="icon" href="https://raw.githubusercontent.com/microsoft/fluentui-emoji/refs/heads/main/assets/Locked%20with%20key/High%20Contrast/locked_with_key_high_contrast.svg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+</head>
+<body>
+    <noscript><h3>この暗号化プログラムはJavascriptをONにしないと動作しません</h3></noscript>
+    <div style="font-size:1.17rem;color:rgb(105, 60, 255);font-family:ubuntu,sans-serif,system-ui,-apple-system,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, serif, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" class="license"><h2 style="font-weight:auto;">LICENSE</h2 style="margin:1.2px;font:serif,sans-serif bold;"> The MIT License<br>Copyright (c) 2026 @light-125<br>本ソフトウェアおよび関連する文書のファイル（以下「ソフトウェア」）の複製を取得した全ての人物に対し、以下の条件に従うことを前提に、ソフトウェアを無制限に扱うことを無償で許可します。これには、ソフトウェアの複製を使用、複製、改変、結合、公開、頒布、再許諾、および/または販売する権利、およびソフトウェアを提供する人物に同様の行為を許可する権利が含まれますが、これらに限定されません。<br>上記の著作権表示および本許諾表示を、ソフトウェアの全ての複製または実質的な部分に記載するものとします。<br>ソフトウェアは「現状有姿」で提供され、商品性、特定目的への適合性、および権利の非侵害性に関する保証を含むがこれらに限定されず、明示的であるか黙示的であるかを問わず、いかなる種類の保証も行われません。著作者または著作権者は、契約、不法行為、またはその他の行為であるかを問わず、ソフトウェアまたはソフトウェアの使用もしくはその他に取り扱いに起因または関連して生じるいかなる請求、損害賠償、その他の責任について、一切の責任を負いません。</div>
+    <div class="box" id="main-generator">
+        <h1 class="notraslate">高互換性 文字暗号化装置 Version 8.16.05</h1>
+        <h3>スーパーコンピューターを利用しても数兆年かかるURL、base64エンコード、1000進数難解読暗号化プログラム</h3>
+        <label style="margin:2.45px;font-size:1.25rem;">1. URLエンコード 2. base64エンコード 3.独自言語による全言語10進数数字化 4. 2進数変換 5. 1000進数変換</label>
+        <label>暗号化文章:</label>
+        <textarea id="input_text" tabindex="1" placeholder="ここにメッセージを入力..."></textarea>
+        <label>暗号キー（因数分解キー）:</label>
+        <textarea id="prime_key" tabindex="2" placeholder="ここに数字の鍵を入力..."></textarea>
+        <div class="btn-group">
+            <button id="btn_gen" tabindex="3">安全なQRコードとリンクを生成</button>
+        </div>
+        <div id="qrcode-space">
+            <label style="margin-bottom:15px; color:#00ffcc;">生成に成功しました。スマホでスキャンするか、下のリンクをクリックしてください</label>
+            <canvas id="qrcode-canvas"></canvas>
+            <div class="link-container">
+                <a id="jump_link" class="secret-link" tabindex="4">このページ内で解読する</a>
+            </div>
+        </div>
+    </div>
+    <div id="decrypt-panel">
+        <div class="decode-box">
+            <h2>受信メッセージ解析結果</h2>
+            <div id="res">解読中...</div>
+            <button class="close-btn" id="close-panel-btn">閉じる</button>
+        </div>
+    </div>
+</body>
+</html>
